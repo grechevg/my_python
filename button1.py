@@ -1,4 +1,26 @@
 import wx
+from random import randint
+
+
+def check_xo(ls, xo):
+    res = [[],[],[],[],[]]
+    for i in range(3):
+        res.append(ls[i])
+        for j in range(3):
+            res[j].append(ls[i][j])
+            if j == i:
+                res[3].append(ls[i][j])
+            if j == 2 - i:
+                res[4].append(ls[i][j])
+    return any([l.count(xo) == 3 for l in res])
+
+def step_level_1(ls):
+    i, j = randint(0, 2), randint(0, 2)
+    while ls[i][j] != 'z':
+        i, j = randint(0, 2), randint(0, 2)
+    return (i, j)
+
+
 
 def tach1(event):
     global fl
@@ -86,7 +108,7 @@ def tach8(event):
         else:
             btn8.SetLabel("O")
             fl = True
-    print('сработала кнопка 1', fl, event)
+    print('сработала кнопка 8', fl, event)
 
 def tach9(event):
     global fl
@@ -101,7 +123,7 @@ def tach9(event):
 
 app = wx.App()
 fl = True
-frame = wx.Frame(None, title='Крестики Нолики')
+frame = wx.Frame(None, title='Крестики Нолики', size=(380, 600))
 
 font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
 font.SetPointSize(32)
@@ -131,9 +153,30 @@ frame.Bind(wx.EVT_BUTTON, tach6, btn6)
 frame.Bind(wx.EVT_BUTTON, tach7, btn7)
 frame.Bind(wx.EVT_BUTTON, tach8, btn8)
 frame.Bind(wx.EVT_BUTTON, tach9, btn9)
+frame.Show()
+if fl == False:
+    print('сработал Флаг')
 
-
-
-
+# bt = [[]]
+# lst = [['z', 'z', 'z'],
+#        ['z', 'z', 'z'],
+#        ['z', 'z', 'z']]
+# step = 2
+# while fl == False:
+#     stp = ('O', 'X')[step%2]
+#     if step == 10:
+#         print('-----------------')
+#         print(' Ничья ')
+#     elif check_xo(lst, 'X'):
+#         print('-----------------', ' Ura !!! Победил: X')
+#         break
+#     else:
+#         x, y = step_level_1(lst)
+#         lst[x][y] = stp
+#         tach9()
+#         print('-----------------')
+#         if check_xo(lst, stp):
+#             print('-----------------', ' Ura !!! Победил:', stp)
+#             break
 frame.Show()
 app.MainLoop()
